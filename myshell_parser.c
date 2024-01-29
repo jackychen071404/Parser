@@ -28,7 +28,16 @@ struct pipeline *pipeline_build(const char *command_line)
   size_t commands_count  = 0;
   char *commands[MAX_ARGV_LENGTH];
   split_args(command_line, commands, &commands_count);
-  
+
+  struct pipeline_command *current_command = NULL;
+
+  for (size_t i = 0; i < commands_count; i++) {
+    struct pipeline_command *command = malloc(sizeof(struct pipeline_command));
+    if (command == NULL) {
+      perror("Error for command");
+      exit(EXIT_FAILURE);
+    }
+  }
   return NULL;
 }
 
