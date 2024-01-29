@@ -37,6 +37,13 @@ struct pipeline *pipeline_build(const char *command_line)
       perror("Error for command");
       exit(EXIT_FAILURE);
     }
+    command->next = NULL;
+    command->redirect_in_path = NULL;
+    command->redirect_out_path = NULL;
+
+    size_t num_args = 0;
+    split_args(commands[i], command->command_args, &num_args);
+    
   }
   return NULL;
 }
