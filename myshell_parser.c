@@ -23,6 +23,7 @@ void split_args(const char *input, char *output[MAX_ARGV_LENGTH], size_t *num_ar
   for (size_t i = 0; i < *num_args; i++) {
     free(output[i]);
   }
+  output[*num_args] = NULL;
 }
     
 struct pipeline *pipeline_build(const char *command_line)
@@ -57,6 +58,11 @@ struct pipeline *pipeline_build(const char *command_line)
     size_t num_args = 0;
     split_args(commands[i], command->command_args, &num_args);
 
+    if (command->command_args == NULL) {
+      perror("Error allocating memory for command arguments");
+      exit(EXIT_FAILURE);
+    }
+
     if (i == 0) {
       pipe->commands = command; //First command
     } else {
@@ -75,9 +81,11 @@ void free_command(struct pipeline_command *command) {
   for (size_t i = 0; i < MAX_ARGV_LENGTH && command->command_args[i] != NULL; i++) {
     free(command->command_args[i]);
   }
+
   free(command->command_args);
   free(command->redirect_in_path);
   free(command->redirect_out_path);
+  free(command);
 }
 
 void pipeline_free(struct pipeline *pipeline)
