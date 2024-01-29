@@ -54,6 +54,20 @@ struct pipeline *pipeline_build(const char *command_line)
   return pipe;
 }
 
+void free_command(struct pipeline_command *command) {
+  if (command == NULL) {
+    return;
+  }
+
+  for (size_t i = 0; i < MAX_ARGV_LENGTH; i++) {
+    free(command->command_args[i]);
+  }
+
+  free(command->redirect_in_path);
+  free(command->redirect_out_path);
+  free(command);
+}
+
 void pipeline_free(struct pipeline *pipeline)
 {
   if (pipeline == NULL) {
@@ -64,7 +78,7 @@ void pipeline_free(struct pipeline *pipeline)
   while (current != NULL) {
     struct pipeline_command *next = current->next;
     //deallocate elements
-    
+    free_command(current);
     current = next;
   }
 
