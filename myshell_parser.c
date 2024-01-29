@@ -62,7 +62,8 @@ void pipeline_free(struct pipeline *pipeline)
 
   struct pipeline_command *current = pipeline->commands;
   while (current != NULL) {
-
+    struct pipeline_command *next = current->next;
+    current = next;
   }
   // TODO: Implement this function
 }
