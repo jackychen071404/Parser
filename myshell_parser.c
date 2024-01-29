@@ -56,5 +56,13 @@ struct pipeline *pipeline_build(const char *command_line)
 
 void pipeline_free(struct pipeline *pipeline)
 {
+  if (pipeline == NULL) {
+    return;
+  }
+
+  struct pipeline_command *current = pipeline->commands;
+  while (current != NULL) {
+
+  }
   // TODO: Implement this function
 }
