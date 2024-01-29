@@ -5,9 +5,14 @@
 #include <string.h>
 
 void split_args(const char *input, char *output[MAX_ARGV_LENGTH], size_t *num_args) {
+  if (output == NULL) {
+    perror("Error: Output array is NULL");
+    exit(EXIT_FAILURE);
+  }
+  
   char *copy = strdup(input);  // make a copy of the input string
   if (copy == NULL) {
-    perror("Error allocating memory for string copy");
+    perror("Error allocating for string copy");
     exit(EXIT_FAILURE);
   }
 
@@ -15,7 +20,9 @@ void split_args(const char *input, char *output[MAX_ARGV_LENGTH], size_t *num_ar
   *num_args = 0;
 
   while (split != NULL && *num_args < MAX_ARGV_LENGTH) {
+    if (strlen(split) > 0) {
     output[(*num_args)++] = strdup(split);
+    }
     split  = strtok(NULL, " \t\n");
   }
 
@@ -57,12 +64,11 @@ struct pipeline *pipeline_build(const char *command_line)
 
     size_t num_args = 0;
     split_args(commands[i], command->command_args, &num_args);
-
+  
     if (command->command_args == NULL) {
       perror("Error allocating memory for command arguments");
       exit(EXIT_FAILURE);
     }
-
     if (i == 0) {
       pipe->commands = command; //First command
     } else {
