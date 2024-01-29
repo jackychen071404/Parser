@@ -43,7 +43,12 @@ struct pipeline *pipeline_build(const char *command_line)
 
     size_t num_args = 0;
     split_args(commands[i], command->command_args, &num_args);
-    
+
+    if (i == 0) {
+      pipe->commands = command; //First command
+    } else {
+      current_command->next = command; 
+    }
   }
   return NULL;
 }
