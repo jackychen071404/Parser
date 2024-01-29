@@ -74,7 +74,6 @@ void free_command(struct pipeline_command *command) {
   free(command->command_args);
   free(command->redirect_in_path);
   free(command->redirect_out_path);
-  free(command);
 }
 
 void pipeline_free(struct pipeline *pipeline)
