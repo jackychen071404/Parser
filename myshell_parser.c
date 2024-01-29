@@ -49,8 +49,9 @@ struct pipeline *pipeline_build(const char *command_line)
     } else {
       current_command->next = command; 
     }
+    current_command = command;
   }
-  return NULL;
+  return pipe;
 }
 
 void pipeline_free(struct pipeline *pipeline)
