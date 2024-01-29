@@ -15,6 +15,9 @@ struct pipeline *pipeline_build(const char *command_line)
   pipe->is_background = false;
   pipe->commands = NULL;
 
+  size_t commands_count  = 0;
+  char *commands[MAX_ARGV_LENGTH];
+  
   return NULL;
 }
 
