@@ -5,12 +5,21 @@
 #include <string.h>
 
 void split_args(const char *input, char *output[MAX_ARGV_LENGTH], size_t *num_args) {
-  char *split = strtok((char *)input, " \t\n"); //split string at \t and \n
+  char *copy = strdup(input);  // make a copy of the input string
+  if (copy == NULL) {
+    perror("Error allocating memory for string copy");
+    exit(EXIT_FAILURE);
+  }
+
+  char *split = strtok(copy, " \t\n");
   *num_args = 0;
+
   while (split != NULL && *num_args < MAX_ARGV_LENGTH) {
-    output[(*num_args)++] = split; //num_args will be updated
+    output[(*num_args)++] = strdup(split);
     split  = strtok(NULL, " \t\n");
   }
+
+  free(copy);
 }
     
 struct pipeline *pipeline_build(const char *command_line)
@@ -59,7 +68,7 @@ void free_command(struct pipeline_command *command) {
     return;
   }
 
-  for (size_t i = 0; i < MAX_ARGV_LENGTH; i++) {
+  for (size_t i = 0; i < MAX_ARGV_LENGTH && command->command_args[i] != NULL; i++) {
     free(command->command_args[i]);
   }
 
