@@ -5,7 +5,7 @@
 #include <string.h>
 
 void split_args(const char *input, char *output[MAX_ARGV_LENGTH], size_t *num_args) {
-  char *split = strtok((char *)input, " \t\n"; //split string at \t and \n
+  char *split = strtok((char *)input, " \t\n"); //split string at \t and \n
   *num_args = 0;
   while (split != NULL && *num_args < MAX_ARGV_LENGTH) {
     output[(*num_args)++] = split; //num_args will be updated
@@ -27,7 +27,7 @@ struct pipeline *pipeline_build(const char *command_line)
 
   size_t commands_count  = 0;
   char *commands[MAX_ARGV_LENGTH];
-  split_args(command_line, commands, &num_commands);
+  split_args(command_line, commands, &commands_count);
   
   return NULL;
 }
