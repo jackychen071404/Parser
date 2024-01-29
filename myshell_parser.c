@@ -2,8 +2,15 @@
 #include "stddef.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 void split_args(const char *input, char *output[MAX_ARGV_LENGTH], size_t *num_args) {
+  char *split = strtok((char *)input, " \t\n"; //split string at \t and \n
+  *num_args = 0;
+  while (split != NULL && *num_args < MAX_ARGV_LENGTH) {
+    output[(*num_args)++] = split;
+    split  = strtok(NULL, " \t\n");
+  }
 
 }
 struct pipeline *pipeline_build(const char *command_line)
