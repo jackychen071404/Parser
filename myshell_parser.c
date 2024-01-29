@@ -63,7 +63,11 @@ void pipeline_free(struct pipeline *pipeline)
   struct pipeline_command *current = pipeline->commands;
   while (current != NULL) {
     struct pipeline_command *next = current->next;
+    //deallocate elements
+    
     current = next;
   }
+
+  free(pipeline); //deallocate all memory of pipeline after deallocate its elements
   // TODO: Implement this function
 }
