@@ -29,10 +29,28 @@ struct pipeline *pipeline_build(const char *command_line) {
     {
       if(command_line[i] == ' ' || command_line[i] == '\n' || command_line[i] == '\t')
 	i++;
+      if(current->redirect_out_path != NULL)
+	{
+	  pipeline_free(pipe);
+	  return NULL;
+	}
 }
 
 void pipeline_free(struct pipeline *pipeline)
 {
-
+  struct pipeline_command *current = pipeline->commands; 
+  while(current!=NULL)
+    {
+      for(int i = 0; i<MAX_ARGV_LENGTH; i++)
+	{
+	  free(current->command_args[i]); //free all the command arguments
+	}
+      free(current->redirect_in_path); 
+      free(current->redirect_out_path);
+      struct pipeline_command *nextcommand = current->next;
+      free(current); //this frees the fields, redirects and next
+      current = nextcommand; //move to the next one
+    }
+  free(pipeline); //free th whole pipelin
 
 }
