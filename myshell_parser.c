@@ -11,6 +11,10 @@ struct pipeline *pipeline_build(const char *command_line)
     perror("Error for allocation"); //print a failed message for failure to allocate memory
     exit(EXIT_FAILURE);
     }
+
+  pipe->is_background = false;
+  pipe->commands = NULL;
+
   return NULL;
 }
 
