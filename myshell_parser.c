@@ -59,7 +59,6 @@ struct pipeline *pipeline_build(const char *command_line) {
 	  i++;
 	  pipe->is_background = 1;
         }
-    }
     else if(command_line[i] == '<')
       {
 	i++;
@@ -68,6 +67,7 @@ struct pipeline *pipeline_build(const char *command_line) {
 	    pipeline_free(pipe);
 	    return NULL;
 	  }
+	char *in = malloc(MAX_LINE_LENGTH); //memory for redirect_in
 	while(command_line[i]==' ' || command_line[i] == '\n' || command_line[i] == '\t')
 	  i++;
 	if(command_line[i] == '&' || command_line[i] == '>' || command_line[i] == '<' || command_line[i] == '|')
@@ -75,16 +75,51 @@ struct pipeline *pipeline_build(const char *command_line) {
 	    pipeline_free(pipe);
 	    return NULL;
 	  }
-	char *in = malloc(MAX_LINE_LENGTH);
 	int j = 0;
 	while(command_line[i] != ' ' && command_line[i] != '\t' && command_line[i] != '\n' && command_line[i] != '&' && command_line[i] != '>' && command_line[i] != '<' && command_line[i] != '|')
 	  {
 	    in[j] = command_line[i];
-	    j++;
 	    i++;
+	    j++;
 	  }
 	current->redirect_in_path = in;
       }
+    else if(command_line[i] == '|')
+      {
+	index = 1;
+	struct pipeline_command *nextcommand = malloc(sizeof(struct pipeline_command));
+	for(int i = 0; i < MAX_ARGV_LENGTH; i++)
+	  {
+	    nextcommand->command_args[i] = NULL;
+	  }
+	nextcommand->next = NULL;
+	nextcommand->redirect_in_path = NULL;
+	nextcommand->redirect_out_path = NULL;
+	current->next = nextcommand;
+	current = nextcommand;
+	i++;
+      }
+   else
+      {
+	char *args = malloc(MAX_ARGV_LENGTH);
+	int j = 0;
+	while(command_line[i] != ' ' && command_line[i] != '\n' && command_line[i] != '\t' && command_line[i] != '&' && command_line[i] != '>' && command_line[i] != '<' && command_line[i] != '|')
+	  {
+	    args[j] = command_line[i];
+	    i++;
+	    j++;
+	  }
+	if(current->command_args[0] == NULL)
+	  current->command_args[0] = args;
+	else
+	  {
+	    current->command_args[index] = args;
+	    index++;
+	  }
+      }
+    }
+  return pipe;
+}
 
 void pipeline_free(struct pipeline *pipeline)
 {
