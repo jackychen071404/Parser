@@ -21,6 +21,14 @@ struct pipeline *pipeline_build(const char *command_line) {
 
   pipe->commands = first;
   current = first;
+
+  int index = 1;
+  int i = 0;
+
+  while(command_line[i]!='\0')
+    {
+      if(command_line[i] == ' ' || command_line[i] == '\n' || command_line[i] == '\t')
+	i++;
 }
 
 void pipeline_free(struct pipeline *pipeline)
