@@ -5,11 +5,11 @@
 #include <string.h>
 
 void split_args(const char *input, char *output[MAX_ARGV_LENGTH], size_t *num_args) {
-  if (output == NULL) {
+  if (output == NULL || num_args == NULL ) {
     perror("Error: Output array is NULL");
     exit(EXIT_FAILURE);
   }
-  
+
   char *copy = strdup(input);  // make a copy of the input string
   if (copy == NULL) {
     perror("Error allocating for string copy");
@@ -18,29 +18,28 @@ void split_args(const char *input, char *output[MAX_ARGV_LENGTH], size_t *num_ar
 
   char *split = strtok(copy, " \t\n");
   *num_args = 0;
-
+  
   while (split != NULL && *num_args < MAX_ARGV_LENGTH) {
     if (strlen(split) > 0) {
-    output[(*num_args)++] = strdup(split);
+      output[(*num_args)++] = strdup(split);
     }
-    split  = strtok(NULL, " \t\n");
+    split = strtok(NULL, " \t\n");
   }
 
   free(copy);
   for (size_t i = 0; i < *num_args; i++) {
-    free(output[i]);
+  free(output[i]);  // Free each argument
   }
-  output[*num_args] = NULL;
+   output[*num_args] = NULL;
 }
     
-struct pipeline *pipeline_build(const char *command_line)
-{
+struct pipeline *pipeline_build(const char *command_line) {
   // TODO: Implement this function
   struct pipeline *pipe = malloc(sizeof(struct pipeline)); //allocate memory for a pipeline struct
   if (pipe == NULL) {
     perror("Error for allocation"); //print a failed message for failure to allocate memory
     exit(EXIT_FAILURE);
-    }
+  }
 
   pipe->is_background = false;
   pipe->commands = NULL;
@@ -58,13 +57,16 @@ struct pipeline *pipeline_build(const char *command_line)
       exit(EXIT_FAILURE);
     }
     printf("Command[%zu]: %s\n", i, commands[i]);
+   
     command->next = NULL;
     command->redirect_in_path = NULL;
     command->redirect_out_path = NULL;
 
+    
     size_t num_args = 0;
+    printf("Command[%zu]: %s\n", i, commands[i]);
     split_args(commands[i], command->command_args, &num_args);
-  
+    printf("Command[%zu]: %s\n", i, commands[i]);
     if (command->command_args == NULL) {
       perror("Error allocating memory for command arguments");
       exit(EXIT_FAILURE);
@@ -72,10 +74,10 @@ struct pipeline *pipeline_build(const char *command_line)
     if (i == 0) {
       pipe->commands = command; //First command
     } else {
-      current_command->next = command; 
+      current_command->next = command;
     }
     current_command = command;
-    }
+  }
   return pipe;
 }
 
@@ -86,6 +88,7 @@ void free_command(struct pipeline_command *command) {
 
   for (size_t i = 0; i < MAX_ARGV_LENGTH && command->command_args[i] != NULL; i++) {
     free(command->command_args[i]);
+    command->command_args[i] = NULL;
   }
 
   free(command->command_args);
