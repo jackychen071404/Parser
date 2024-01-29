@@ -3,6 +3,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+void split_args(const char *input, char *output[MAX_ARGV_LENGTH], size_t *num_args) {
+
+}
 struct pipeline *pipeline_build(const char *command_line)
 {
   // TODO: Implement this function
