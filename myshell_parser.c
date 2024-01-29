@@ -20,6 +20,9 @@ void split_args(const char *input, char *output[MAX_ARGV_LENGTH], size_t *num_ar
   }
 
   free(copy);
+  for (size_t i = 0; i < *num_args; i++) {
+    free(output[i]);
+  }
 }
     
 struct pipeline *pipeline_build(const char *command_line)
