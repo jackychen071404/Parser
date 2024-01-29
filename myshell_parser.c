@@ -49,6 +49,7 @@ struct pipeline *pipeline_build(const char *command_line)
       perror("Error for command");
       exit(EXIT_FAILURE);
     }
+    printf("Command[%zu]: %s\n", i, commands[i]);
     command->next = NULL;
     command->redirect_in_path = NULL;
     command->redirect_out_path = NULL;
@@ -62,7 +63,7 @@ struct pipeline *pipeline_build(const char *command_line)
       current_command->next = command; 
     }
     current_command = command;
-  }
+    }
   return pipe;
 }
 
