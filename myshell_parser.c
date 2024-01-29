@@ -71,7 +71,7 @@ void free_command(struct pipeline_command *command) {
   for (size_t i = 0; i < MAX_ARGV_LENGTH && command->command_args[i] != NULL; i++) {
     free(command->command_args[i]);
   }
-
+  free(command->command_args);
   free(command->redirect_in_path);
   free(command->redirect_out_path);
   free(command);
