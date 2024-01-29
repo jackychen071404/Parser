@@ -8,11 +8,11 @@ void split_args(const char *input, char *output[MAX_ARGV_LENGTH], size_t *num_ar
   char *split = strtok((char *)input, " \t\n"; //split string at \t and \n
   *num_args = 0;
   while (split != NULL && *num_args < MAX_ARGV_LENGTH) {
-    output[(*num_args)++] = split;
+    output[(*num_args)++] = split; //num_args will be updated
     split  = strtok(NULL, " \t\n");
   }
-
 }
+    
 struct pipeline *pipeline_build(const char *command_line)
 {
   // TODO: Implement this function
@@ -27,6 +27,7 @@ struct pipeline *pipeline_build(const char *command_line)
 
   size_t commands_count  = 0;
   char *commands[MAX_ARGV_LENGTH];
+  split_args(command_line, commands, &num_commands);
   
   return NULL;
 }
