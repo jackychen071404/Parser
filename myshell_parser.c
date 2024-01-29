@@ -1,9 +1,16 @@
 #include "myshell_parser.h"
 #include "stddef.h"
+#include <stdlib.h>
+#include <stdio.h>
 
 struct pipeline *pipeline_build(const char *command_line)
 {
   // TODO: Implement this function
+  struct pipeline *pipe = malloc(sizeof(struct pipeline)); //allocate memory for a pipeline struct
+  if (pipe == NULL) {
+    perror("Error for allocation");
+    exit(EXIT_FAILURE);
+    }
   return NULL;
 }
 
